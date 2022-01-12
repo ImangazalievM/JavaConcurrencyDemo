@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import executor.SimpleOutlinedExposedDropDownMenu
-import executor.ThreadPullExecutorPresenter
-import executor.ThreadPullExecutorState
+import executor.ThreadPoolExecutorPresenter
+import executor.ThreadPoolExecutorState
 import global.extensions.asStrings
 import global.ui.components.FlowRow
 import global.ui.components.ScrollBar
@@ -26,10 +26,10 @@ import global.ui.components.WindowHeader
 import global.ui.modifiers.dashedBorder
 import global.ui.mvp.BaseMvpWindow
 
-class ThreadPullExecutorWindow : BaseMvpWindow<ThreadPullExecutorPresenter, ThreadPullExecutorState>() {
+class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, ThreadPoolExecutorState>() {
 
-    override fun createPresenter(): ThreadPullExecutorPresenter {
-        return ThreadPullExecutorPresenter()
+    override fun createPresenter(): ThreadPoolExecutorPresenter {
+        return ThreadPoolExecutorPresenter()
     }
 
     override fun getContent() = @Composable {

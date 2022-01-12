@@ -20,7 +20,7 @@ class MainWindow : BaseWindow() {
 
     override fun getRouteWindow(route: Route): BaseWindow {
         return when (route) {
-            is Routes.ThreadPoolExecutor -> ThreadPullExecutorWindow()
+            is Routes.ThreadPoolExecutor -> ThreadPoolExecutorWindow()
             else -> super.getRouteWindow(route)
         }
     }

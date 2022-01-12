@@ -8,14 +8,14 @@ import java.util.concurrent.*
 import kotlin.random.Random
 
 
-class ThreadPullExecutorPresenter : Presenter<ThreadPullExecutorState>() {
+class ThreadPoolExecutorPresenter : Presenter<ThreadPoolExecutorState>() {
 
     private lateinit var tasks: List<FooTask>
     private var executor: ExecutorService = createExecutorService(THREAD_COUNT_DEFAULT)
 
-    override fun getInitialState(): ThreadPullExecutorState {
+    override fun getInitialState(): ThreadPoolExecutorState {
         tasks = generateTasks(TASK_COUNT_DEFAULT)
-        return ThreadPullExecutorState(
+        return ThreadPoolExecutorState(
             taskCount = TASK_COUNT_DEFAULT,
             threadCount = THREAD_COUNT_DEFAULT,
             areThreadsRunning = false,
