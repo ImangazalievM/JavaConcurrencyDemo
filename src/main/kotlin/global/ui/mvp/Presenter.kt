@@ -13,10 +13,10 @@ abstract class Presenter<S : State> {
 
     @Composable
     fun init() {
-        val state = getInitialState()
-        mutableState = remember { mutableStateOf(state) }
         if (!isInitialized) {
-            updateState(getInitialState())
+            val state = getInitialState()
+            mutableState = remember { mutableStateOf(state) }
+            updateState(state)
             isInitialized = true
         }
     }

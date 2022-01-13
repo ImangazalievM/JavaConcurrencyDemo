@@ -11,6 +11,8 @@ abstract class BaseMvpWindow<P : Presenter<S>, S : State>: BaseWindow() {
 
     @Composable
     protected fun state(): S = presenter.state()
+    protected val state: S
+        @Composable get() = presenter.state()
 
     @Composable
     override fun render() {

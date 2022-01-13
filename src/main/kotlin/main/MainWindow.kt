@@ -11,22 +11,12 @@ import global.ui.navigation.Routes
 import global.ui.components.FlowRow
 import global.ui.navigation.router.BaseWindow
 import global.ui.navigation.Route
+import synchronizers.synchronized.SynchronizedWindow
 
 class MainWindow : BaseWindow() {
 
-    override fun getContent(): @Composable () -> Unit = {
-        Content()
-    }
-
-    override fun getRouteWindow(route: Route): BaseWindow {
-        return when (route) {
-            is Routes.ThreadPoolExecutor -> ThreadPoolExecutorWindow()
-            else -> super.getRouteWindow(route)
-        }
-    }
-
     @Composable
-    private fun Content() = Column(
+    override fun renderContent() = Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -38,6 +28,14 @@ class MainWindow : BaseWindow() {
         Synchronizers()
         Spacer(modifier = Modifier.height(15.dp))
         Other()
+    }
+
+    override fun getRouteWindow(route: Route): BaseWindow {
+        return when (route) {
+            is Routes.ThreadPoolExecutor -> ThreadPoolExecutorWindow()
+            is Routes.Synchronized -> SynchronizedWindow()
+            else -> super.getRouteWindow(route)
+        }
     }
 
     @Composable
@@ -108,6 +106,11 @@ class MainWindow : BaseWindow() {
             mainAxisSpacing = 10.dp,
             maxLineChild = 3
         ) {
+            Button(onClick = {
+                router.push(Routes.Synchronized)
+            }) {
+                Text("Synchronized")
+            }
             Button(onClick = {}) {
                 Text("Phaser")
             }

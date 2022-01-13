@@ -22,19 +22,18 @@ abstract class BaseWindow {
     @Composable
     open fun render() {
         Router(rootRoute) { backStack ->
-            println("router(${javaClass.simpleName}): ${this::router.isInitialized}")
             if (!this::router.isInitialized) this.router = backStack
             val currentRoute = backStack.last()
             if (rootRoute.separateWindow) {
                 showInSeparateWindow(rootRoute.windowOptions) {
                     if (currentRoute == rootRoute) {
-                        getContent()()
+                        renderContent()
                     } else {
                         onNavigation(currentRoute)
                     }
                 }
             } else {
-                getContent()()
+                renderContent()
             }
         }
     }
@@ -56,7 +55,8 @@ abstract class BaseWindow {
 
     private fun onCloseWindow() = AppManager.windows.lastOrNull()?.close()
 
-    protected abstract fun getContent(): @Composable () -> Unit
+    @Composable
+    protected abstract fun renderContent()
 
     @Composable
     protected open fun onNavigation(route: Route) {
