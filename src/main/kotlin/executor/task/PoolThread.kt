@@ -1,6 +1,6 @@
-package global.task
+package executor.task
 
-class DemoThread(
+class PoolThread(
     val id: Int,
     runnable: Runnable
 ) : Thread(runnable, "DemoThread: $id")

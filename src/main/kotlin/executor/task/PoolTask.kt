@@ -1,15 +1,15 @@
-package global.task
+package executor.task
 
-class FooTask(
+class PoolTask(
     private val taskNumber: Int,
     private val max: Int,
-    private val onProgress: (TaskProgress) -> Unit
+    private val onProgress: (PoolTaskProgress) -> Unit
 ) : Runnable {
 
     private var threadId: Int? = null
     private var progressNumber: Int = INITIAL_PROGRESS
     private var finishedAt: Long = INITIAL_FINISHED_AT
-    val progress: TaskProgress
+    val progress: PoolTaskProgress
         get() = createProgress(progressNumber)
 
     override fun run() {
@@ -24,14 +24,14 @@ class FooTask(
                 threadId = null
                 finishedAt = System.currentTimeMillis()
             } else {
-                threadId = (Thread.currentThread() as DemoThread).id
+                threadId = (Thread.currentThread() as PoolThread).id
             }
 
             onProgress(createProgress(progress))
         }
     }
 
-    private fun createProgress(progress: Int) = TaskProgress(
+    private fun createProgress(progress: Int) = PoolTaskProgress(
         taskNumber = taskNumber,
         max = max,
         progress = progress,

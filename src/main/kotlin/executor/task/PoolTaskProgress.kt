@@ -1,6 +1,6 @@
-package global.task
+package executor.task
 
-data class TaskProgress(
+data class PoolTaskProgress(
     val taskNumber: Int,
     val max: Int,
     val progress: Int,
@@ -9,7 +9,7 @@ data class TaskProgress(
 ) {
 
     val isStarted: Boolean
-        get() = progress != FooTask.INITIAL_PROGRESS
+        get() = progress != PoolTask.INITIAL_PROGRESS
     val isFinished: Boolean
         get() = progress == max
 

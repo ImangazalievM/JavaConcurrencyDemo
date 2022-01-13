@@ -1,8 +1,8 @@
 package executor
 
-import global.task.DemoThread
-import global.task.FooTask
-import global.task.TaskProgress
+import executor.task.PoolThread
+import executor.task.PoolTask
+import executor.task.PoolTaskProgress
 import global.ui.mvp.Presenter
 import java.util.concurrent.*
 import kotlin.random.Random
@@ -10,7 +10,7 @@ import kotlin.random.Random
 
 class ThreadPoolExecutorPresenter : Presenter<ThreadPoolExecutorState>() {
 
-    private lateinit var tasks: List<FooTask>
+    private lateinit var tasks: List<PoolTask>
     private var executor: ExecutorService = createExecutorService(THREAD_COUNT_DEFAULT)
 
     override fun getInitialState(): ThreadPoolExecutorState {
@@ -57,21 +57,21 @@ class ThreadPoolExecutorPresenter : Presenter<ThreadPoolExecutorState>() {
         Executors.newFixedThreadPool(threadCount, object : ThreadFactory {
             private var counter = 1
             override fun newThread(runnable: Runnable): Thread {
-                return DemoThread(counter++, runnable)
+                return PoolThread(counter++, runnable)
             }
         })
 
-    private fun generateTasks(size: Int): MutableList<FooTask> {
+    private fun generateTasks(size: Int): MutableList<PoolTask> {
         return (1..size).map { taskNumber ->
             val duration = Random.nextInt(5, 10)
-            FooTask(taskNumber, duration) {
+            PoolTask(taskNumber, duration) {
                 updateProgress(taskNumber, it)
             }
         }.toMutableList()
     }
 
     @Synchronized
-    private fun updateProgress(taskNumber: Int, progress: TaskProgress) {
+    private fun updateProgress(taskNumber: Int, progress: PoolTaskProgress) {
         val newProgress = state.progress.toMutableList()
         newProgress[taskNumber - 1] = progress
 

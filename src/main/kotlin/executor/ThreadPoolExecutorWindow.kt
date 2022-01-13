@@ -22,6 +22,7 @@ import executor.ThreadPoolExecutorState
 import global.extensions.asStrings
 import global.ui.components.FlowRow
 import global.ui.components.ScrollBar
+import global.ui.components.WindowContent
 import global.ui.components.WindowHeader
 import global.ui.modifiers.dashedBorder
 import global.ui.mvp.BaseMvpWindow
@@ -32,23 +33,19 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
         return ThreadPoolExecutorPresenter()
     }
 
-    override fun getContent() = @Composable {
-        ScrollBar(
+    @Composable
+    override fun renderContent() = WindowContent {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .background(Color(0xfff9f9f9))
+                .fillMaxSize()
+                .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
         ) {
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
-            ) {
-                WindowHeader(title = "ThreadPoolExecutor") {
-                    router.pop()
-                }
-                Spacer(modifier = Modifier.height(5.dp))
-                Content()
+            WindowHeader(title = "ThreadPoolExecutor") {
+                router.pop()
             }
+            Spacer(modifier = Modifier.height(5.dp))
+            Content()
         }
     }
 
@@ -73,26 +70,26 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
         Row {
             SimpleOutlinedExposedDropDownMenu(
                 values = threadValues.asStrings(),
-                selectedIndex = threadValues.indexOf(state().taskCount),
+                selectedIndex = threadValues.indexOf(state.taskCount),
                 label = {
                     Text("Tasks")
                 },
                 modifier = Modifier.requiredWidth(150.dp),
                 onChange = { presenter.onTaskCountSelected(threadValues[it]) },
                 backgroundColor = Color.White,
-                enabled = !state().areThreadsRunning
+                enabled = !state.areThreadsRunning
             )
             Spacer(modifier = Modifier.width(10.dp))
             SimpleOutlinedExposedDropDownMenu(
                 values = threadValues.asStrings(),
-                selectedIndex = threadValues.indexOf(state().threadCount),
+                selectedIndex = threadValues.indexOf(state.threadCount),
                 label = {
                     Text("Threads")
                 },
                 modifier = Modifier.requiredWidth(180.dp),
                 onChange = { presenter.onThreadCountSelected(threadValues[it]) },
                 backgroundColor = Color.White,
-                enabled = !state().areThreadsRunning
+                enabled = !state.areThreadsRunning
             )
         }
     }
@@ -101,14 +98,14 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
     private fun CommandButtons() {
         Row {
             Button(
-                enabled = !state().areThreadsRunning,
+                enabled = !state.areThreadsRunning,
                 onClick = presenter::onStartTasksClick
             ) {
                 Text("Start")
             }
             Spacer(modifier = Modifier.width(10.dp))
             Button(
-                enabled = state().areThreadsRunning,
+                enabled = state.areThreadsRunning,
                 onClick = presenter::onStopTasksClick
             ) {
                 Text("Stop")
@@ -130,7 +127,7 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
             mainAxisSpacing = 10.dp,
             maxLineChild = 5
         ) {
-            val pendingTasks = state().progress.filter { !it.isStarted }
+            val pendingTasks = state.progress.filter { !it.isStarted }
             pendingTasks.forEach { task ->
                 val shape = RoundedCornerShape(10.dp)
                 val width = 100.dp
@@ -156,7 +153,7 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
             mainAxisSpacing = 10.dp,
             maxLineChild = 5
         ) {
-            (1..state().threadCount).forEach { threadId ->
+            (1..state.threadCount).forEach { threadId ->
                 val shape = RoundedCornerShape(10.dp)
                 val width = 100.dp
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -164,7 +161,7 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
                         "Thread $threadId"
                     )
                     Spacer(modifier = Modifier.height(10.dp))
-                    val task = state().progress.firstOrNull {
+                    val task = state.progress.firstOrNull {
                         it.threadId == threadId
                     }
                     val hasTask = task != null
@@ -221,7 +218,7 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
             mainAxisSpacing = 10.dp,
             maxLineChild = 5
         ) {
-            val finishedTasks = state().progress
+            val finishedTasks = state.progress
                 .filter { it.isFinished }
                 .sortedBy { it.finishedAt }
             finishedTasks.forEach { task ->
@@ -244,7 +241,7 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
     @Composable
     private fun TasksProgress() {
         Column {
-            state().progress.forEachIndexed { index, progress ->
+            state.progress.forEachIndexed { index, progress ->
                 Spacer(modifier = Modifier.height(5.dp))
                 val progressPercents = progress.progress.toFloat() / progress.max
                 Row(verticalAlignment = Alignment.CenterVertically) {
