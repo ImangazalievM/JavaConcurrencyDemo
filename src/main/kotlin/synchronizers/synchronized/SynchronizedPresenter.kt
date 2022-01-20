@@ -1,15 +1,12 @@
 package synchronizers.synchronized
 
-import executor.task.PoolTask
 import global.threads.TaskWaitingThread
 import global.ui.mvp.Presenter
-import java.util.concurrent.*
-
+import java.util.concurrent.CountDownLatch
 
 class SynchronizedPresenter : Presenter<SynchronizedState>() {
 
     private lateinit var countDownLatch: CountDownLatch
-    private lateinit var tasks: List<PoolTask>
 
     override fun getInitialState(): SynchronizedState {
         return SynchronizedState(
