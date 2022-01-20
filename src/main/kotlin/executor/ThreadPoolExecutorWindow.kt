@@ -16,12 +16,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
-import executor.SimpleOutlinedExposedDropDownMenu
+import global.ui.components.SimpleOutlinedExposedDropDownMenu
 import executor.ThreadPoolExecutorPresenter
 import executor.ThreadPoolExecutorState
 import global.extensions.asStrings
 import global.ui.components.FlowRow
-import global.ui.components.ScrollBar
 import global.ui.components.WindowContent
 import global.ui.components.WindowHeader
 import global.ui.modifiers.dashedBorder

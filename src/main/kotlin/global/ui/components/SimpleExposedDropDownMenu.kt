@@ -1,4 +1,4 @@
-package executor
+package global.ui.components
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
