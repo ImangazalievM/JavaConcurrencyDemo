@@ -6,6 +6,12 @@ open class TaskProgress(
     val progress: Int
 ) : Thread() {
 
+    val status: TaskStatus
+        get() = when {
+            progress == max -> TaskStatus.FINISHED
+            progress != INITIAL_PROGRESS -> TaskStatus.RUNNING
+            else -> TaskStatus.PENDING
+        }
     val isStarted: Boolean
         get() = progress != INITIAL_PROGRESS
     val isFinished: Boolean

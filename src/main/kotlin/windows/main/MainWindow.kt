@@ -11,6 +11,7 @@ import ui.navigation.Routes
 import ui.components.FlowRow
 import ui.navigation.router.BaseWindow
 import ui.navigation.Route
+import windows.synchronizers.countdown.CountDownWindow
 import windows.synchronizers.synchronized.SynchronizedWindow
 
 class MainWindow : BaseWindow() {
@@ -34,6 +35,7 @@ class MainWindow : BaseWindow() {
         return when (route) {
             is Routes.ThreadPoolExecutor -> ThreadPoolExecutorWindow()
             is Routes.Synchronized -> SynchronizedWindow()
+            is Routes.CountDownLatch -> CountDownWindow()
             else -> super.getRouteWindow(route)
         }
     }

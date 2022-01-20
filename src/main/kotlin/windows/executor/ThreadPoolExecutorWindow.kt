@@ -15,12 +15,12 @@ import windows.executor.ThreadPoolExecutorPresenter
 import windows.executor.ThreadPoolExecutorState
 import extensions.asStrings
 import threads.TaskStatus
-import ui.components.FlowRow
 import ui.components.WindowContent
 import ui.components.WindowHeader
 import ui.modifiers.dashedBorder
 import ui.mvp.BaseMvpWindow
 import ui.parts.task.Task
+import ui.parts.task.TasksLine
 import ui.parts.task.style
 
 class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, ThreadPoolExecutorState>() {
@@ -160,23 +160,6 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
                     style = TaskStatus.FINISHED.style
                 )
             }
-        }
-    }
-
-    @Composable
-    private fun TasksLine(composable: @Composable () -> Unit) = Column {
-        val tasksLineModifier = Modifier.fillMaxSize()
-            .dashedBorder(2.dp, Color(0xffE0E0E0), RoundedCornerShape(10.dp), 5.dp, 2.dp)
-            .padding(10.dp)
-            .defaultMinSize(minHeight = 50.dp)
-
-        FlowRow(
-            modifier = tasksLineModifier,
-            crossAxisSpacing = 10.dp,
-            mainAxisSpacing = 10.dp,
-            maxLineChild = 5
-        ) {
-            composable()
         }
     }
 }
