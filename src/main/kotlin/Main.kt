@@ -1,9 +1,9 @@
 import androidx.compose.desktop.DesktopTheme
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.window.application
-import global.ui.navigation.router.BackPressHandler
-import global.ui.navigation.router.LocalBackPressHandler
-import global.ui.navigation.router.LocalRouting
+import ui.navigation.router.BackPressHandler
+import ui.navigation.router.LocalBackPressHandler
+import ui.navigation.router.LocalRouting
 
 fun main() = application {
     DesktopTheme {
