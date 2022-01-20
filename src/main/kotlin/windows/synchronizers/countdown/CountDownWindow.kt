@@ -1,21 +1,23 @@
 package windows.synchronizers.countdown
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import extensions.asStrings
 import threads.TaskStatus
 import ui.components.SimpleOutlinedExposedDropDownMenu
+import ui.modifiers.dashedBorder
+import ui.mvp.BaseMvpWindow
 import ui.parts.WindowContent
 import ui.parts.WindowHeader
-import ui.mvp.BaseMvpWindow
 import ui.parts.task.Task
 import ui.parts.task.TasksLine
 import ui.parts.task.style
@@ -53,12 +55,13 @@ class CountDownWindow : BaseMvpWindow<CountDownPresenter, CountDownState>() {
         )
 
         Spacer(modifier = Modifier.height(20.dp))
-        val textSize = 20.sp
 
-        TasksStatus(textSize)
+        TasksStatus()
         Spacer(modifier = Modifier.height(20.dp))
         ThreadsVisualization()
         Spacer(modifier = Modifier.height(20.dp))
+        CountDown()
+        Spacer(modifier = Modifier.height(10.dp))
         Button(
             enabled = !state().isRunning,
             onClick = { presenter.startCalculation() }
@@ -68,10 +71,26 @@ class CountDownWindow : BaseMvpWindow<CountDownPresenter, CountDownState>() {
     }
 
     @Composable
-    private fun TasksStatus(textSize: TextUnit) {
+    private fun CountDown() {
+        val shape = RoundedCornerShape(10.dp)
+
+        val finishedTasks = state.progress.filter { it.isFinished }
+        val count = state.progress.size - finishedTasks.size
+        Text(
+            "CountDownLatch: $count",
+            fontSize = 20.sp,
+            modifier = Modifier.background(Color(0xffF0F0F0), shape)
+                .dashedBorder(2.dp, Color(0xffA8A8A8), shape, 5.dp, 2.dp)
+                .padding(10.dp)
+        )
+    }
+
+    @Composable
+    private fun TasksStatus() {
+        val textSize = 20.sp
         Row {
             Text(
-                "Status - ",
+                "Status: ",
                 fontSize = textSize
             )
             Text(
