@@ -23,7 +23,8 @@ fun WindowHeader(
         Icon(
             painter = painterResource("ic_arrow_left.svg"),
             contentDescription = null,
-            modifier = Modifier.width(20.dp)
+            modifier = Modifier.requiredWidth(40.dp)
+                .padding(10.dp)
         )
     }
     Column(
