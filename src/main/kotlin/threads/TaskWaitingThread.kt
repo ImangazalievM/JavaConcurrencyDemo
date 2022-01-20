@@ -1,4 +1,4 @@
-package global.threads
+package threads
 
 class TaskWaitingThread(
     private val wait: () -> Unit

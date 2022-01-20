@@ -1,7 +1,7 @@
 package windows.executor
 
-import windows.executor.task.PoolTaskProgress
 import ui.mvp.State
+import windows.executor.task.PoolTaskProgress
 
 data class ThreadPoolExecutorState(
     val taskCount: Int,

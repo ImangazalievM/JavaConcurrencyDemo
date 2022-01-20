@@ -1,5 +1,7 @@
 package windows.executor.task
 
+import threads.TaskProgress
+
 class PoolTask(
     private val taskNumber: Int,
     private val max: Int,
@@ -7,7 +9,7 @@ class PoolTask(
 ) : Runnable {
 
     private var threadId: Int? = null
-    private var progressNumber: Int = INITIAL_PROGRESS
+    private var progressNumber: Int = TaskProgress.INITIAL_PROGRESS
     private var finishedAt: Long = INITIAL_FINISHED_AT
     val progress: PoolTaskProgress
         get() = createProgress(progressNumber)
@@ -40,7 +42,6 @@ class PoolTask(
     )
 
     companion object {
-        const val INITIAL_PROGRESS = 0
         const val INITIAL_FINISHED_AT = 0L
     }
 }

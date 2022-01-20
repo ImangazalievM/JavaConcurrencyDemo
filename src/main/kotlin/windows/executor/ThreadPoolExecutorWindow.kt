@@ -1,30 +1,27 @@
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
-import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.unit.toSize
 import ui.components.SimpleOutlinedExposedDropDownMenu
 import windows.executor.ThreadPoolExecutorPresenter
 import windows.executor.ThreadPoolExecutorState
 import extensions.asStrings
+import threads.TaskStatus
 import ui.components.FlowRow
 import ui.components.WindowContent
 import ui.components.WindowHeader
 import ui.modifiers.dashedBorder
 import ui.mvp.BaseMvpWindow
+import ui.parts.task.Task
+import ui.parts.task.style
 
 class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, ThreadPoolExecutorState>() {
 
@@ -61,7 +58,6 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
         CommandButtons()
         Spacer(modifier = Modifier.height(10.dp))
         ThreadsVisualization()
-        //TasksProgress()
     }
 
     @Composable
@@ -114,151 +110,73 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
 
     @Composable
     private fun ThreadsVisualization() = Column {
-        val tasksLineModifier = Modifier.fillMaxSize()
-            .dashedBorder(2.dp, Color(0xffE0E0E0), RoundedCornerShape(10.dp), 5.dp, 2.dp)
-            .padding(10.dp)
-            .defaultMinSize(minHeight = 50.dp)
         Text("Pending", style = MaterialTheme.typography.h6)
         Spacer(modifier = Modifier.height(10.dp))
-        FlowRow(
-            modifier = tasksLineModifier,
-            crossAxisSpacing = 10.dp,
-            mainAxisSpacing = 10.dp,
-            maxLineChild = 5
-        ) {
+        TasksLine {
             val pendingTasks = state.progress.filter { !it.isStarted }
             pendingTasks.forEach { task ->
-                val shape = RoundedCornerShape(10.dp)
-                val width = 100.dp
-                Column {
-                    Text(
-                        "Task ${task.taskNumber}",
-                        modifier = Modifier
-                            .defaultMinSize(minWidth = width)
-                            .background(Color(0xffe9edf0), shape)
-                            .border(2.dp, Color(0xffb4bed6), shape)
-                            .padding(15.dp)
-                    )
-                }
+                Task(
+                    text = "Task ${task.taskNumber}",
+                    style = TaskStatus.PENDING.style
+                )
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
         Text("In Progress", style = MaterialTheme.typography.h6)
         Spacer(modifier = Modifier.height(10.dp))
-        FlowRow(
-            modifier = tasksLineModifier,
-            alignment = Alignment.CenterHorizontally,
-            crossAxisSpacing = 10.dp,
-            mainAxisSpacing = 10.dp,
-            maxLineChild = 5
-        ) {
+        TasksLine {
             (1..state.threadCount).forEach { threadId ->
                 val shape = RoundedCornerShape(10.dp)
-                val width = 100.dp
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                    Text(
-                        "Thread $threadId"
-                    )
+                    Text("Thread $threadId")
                     Spacer(modifier = Modifier.height(10.dp))
-                    val task = state.progress.firstOrNull {
-                        it.threadId == threadId
-                    }
+                    val task = state.progress.firstOrNull { it.threadId == threadId }
                     val hasTask = task != null
-                    val taskText = task?.let {
-                        "Task ${it.taskNumber}"
-                    } ?: "Empty"
+                    val taskText = task?.let { "Task ${it.taskNumber}" } ?: "Empty"
 
-                    val taskBackground = if (hasTask) 0xff87CEEB else 0xffF0F0F0
-                    val taskBorder = if (hasTask) 0xff6495ED else 0xffA8A8A8
-                    var taskWidth by remember { mutableStateOf(0f) }
-                    Text(
-                        taskText,
-                        modifier = Modifier
-                            .defaultMinSize(minWidth = width)
-                            .background(Color(taskBackground), shape)
-                            .run {
-                                if (hasTask) {
-                                    border(2.dp, Color(taskBorder), shape)
-                                } else {
-                                    dashedBorder(2.dp, Color(taskBorder), shape, 5.dp, 2.dp)
-                                }
-                            }
-                            .padding(15.dp)
-                            .onGloballyPositioned { coordinates ->
-                                //This value is used to assign to the DropDown the same width
-                                taskWidth = coordinates.size.toSize().width
-                            }
-                    )
-                    Spacer(modifier = Modifier.height(5.dp))
-                    if (task != null) {
-                        val progressPercents = task.progress.toFloat() / task.max
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            LinearProgressIndicator(
-                                progress = progressPercents,
-                                modifier = Modifier
-                                    .width(with(LocalDensity.current) { taskWidth.toDp() })
-                            )
-                            Spacer(modifier = Modifier.width(5.dp))
-                            Text(
-                                "${task.progress}/${task.max}",
-                                fontSize = 10.sp
-                            )
+                    Task(
+                        text = taskText,
+                        progress = task,
+                        style = if (hasTask) {
+                            TaskStatus.RUNNING.style
+                        } else {
+                            Modifier.background(Color(0xffF0F0F0), shape)
+                                .dashedBorder(2.dp, Color(0xffA8A8A8), shape, 5.dp, 2.dp)
                         }
-                    }
+                    )
                 }
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
         Text("Finished", style = MaterialTheme.typography.h6)
         Spacer(modifier = Modifier.height(10.dp))
+        TasksLine {
+            val finishedTasks = state.progress
+                .filter { it.isFinished }
+                .sortedBy { it.finishedAt }
+            finishedTasks.forEach { task ->
+                Task(
+                    text = "Task ${task.taskNumber}",
+                    style = TaskStatus.FINISHED.style
+                )
+            }
+        }
+    }
+
+    @Composable
+    private fun TasksLine(composable: @Composable () -> Unit) = Column {
+        val tasksLineModifier = Modifier.fillMaxSize()
+            .dashedBorder(2.dp, Color(0xffE0E0E0), RoundedCornerShape(10.dp), 5.dp, 2.dp)
+            .padding(10.dp)
+            .defaultMinSize(minHeight = 50.dp)
+
         FlowRow(
             modifier = tasksLineModifier,
             crossAxisSpacing = 10.dp,
             mainAxisSpacing = 10.dp,
             maxLineChild = 5
         ) {
-            val finishedTasks = state.progress
-                .filter { it.isFinished }
-                .sortedBy { it.finishedAt }
-            finishedTasks.forEach { task ->
-                val shape = RoundedCornerShape(10.dp)
-                val width = 100.dp
-                Column {
-                    Text(
-                        "Task ${task.taskNumber}",
-                        modifier = Modifier
-                            .defaultMinSize(minWidth = width)
-                            .background(Color(0xffc9ead1), shape)
-                            .border(BorderStroke(2.dp, Color(0xff87d496)), shape)
-                            .padding(15.dp)
-                    )
-                }
-            }
-        }
-    }
-
-    @Composable
-    private fun TasksProgress() {
-        Column {
-            state.progress.forEachIndexed { index, progress ->
-                Spacer(modifier = Modifier.height(5.dp))
-                val progressPercents = progress.progress.toFloat() / progress.max
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text("${index + 1} - ", style = MaterialTheme.typography.subtitle2)
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(progress.progress.toString())
-                    Spacer(modifier = Modifier.width(5.dp))
-                    RoundedLinearProgressIndicator(
-                        modifier = Modifier.size(
-                            width = 350.dp,
-                            height = 10.dp,
-                        ),
-                        progress = progressPercents
-                    )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Text(progress.max.toString())
-                }
-            }
+            composable()
         }
     }
 }
