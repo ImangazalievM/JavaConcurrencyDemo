@@ -30,7 +30,6 @@ class BackStack<T> internal constructor(
     }
 
     fun pop(): Boolean = Unit.let {
-        println("BACK: ${elements.map { it!!::class.simpleName }}")
         // we won’t let the last item to be popped
         if (size <= 1) false else {
             onElementRemoved.invoke(lastIndex)
