@@ -1,10 +1,12 @@
 package windows.executor
 
-import windows.executor.task.PoolThread
+import ui.mvp.Presenter
 import windows.executor.task.PoolTask
 import windows.executor.task.PoolTaskProgress
-import ui.mvp.Presenter
-import java.util.concurrent.*
+import windows.executor.task.PoolThread
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import java.util.concurrent.ThreadFactory
 import kotlin.random.Random
 
 

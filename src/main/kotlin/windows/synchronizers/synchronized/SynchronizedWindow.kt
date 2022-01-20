@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ui.components.SimpleOutlinedExposedDropDownMenu
 import extensions.asStrings
 import extensions.checkboxChangeListener
+import ui.components.SimpleOutlinedExposedDropDownMenu
 import ui.components.WindowContent
 import ui.components.WindowHeader
 import ui.mvp.BaseMvpWindow

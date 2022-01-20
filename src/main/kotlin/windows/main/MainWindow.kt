@@ -7,10 +7,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import ui.navigation.Routes
 import ui.components.FlowRow
-import ui.navigation.router.BaseWindow
 import ui.navigation.Route
+import ui.navigation.Routes
+import ui.navigation.router.BaseWindow
 import windows.synchronizers.countdown.CountDownWindow
 import windows.synchronizers.synchronized.SynchronizedWindow
 

@@ -1,6 +1,8 @@
 package ui.navigation.router
 
-import androidx.compose.runtime.*
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 
 class BackStack<T> internal constructor(
     initialElement: T,
