@@ -1,4 +1,4 @@
-package ui.components
+package ui.parts
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

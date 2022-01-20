@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.dp
 import extensions.asStrings
 import threads.TaskStatus
 import ui.components.SimpleOutlinedExposedDropDownMenu
-import ui.components.WindowContent
-import ui.components.WindowHeader
+import ui.parts.WindowContent
+import ui.parts.WindowHeader
 import ui.modifiers.dashedBorder
 import ui.mvp.BaseMvpWindow
 import ui.parts.task.Task

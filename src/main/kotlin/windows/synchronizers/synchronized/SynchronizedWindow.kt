@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.sp
 import extensions.asStrings
 import extensions.checkboxChangeListener
 import ui.components.SimpleOutlinedExposedDropDownMenu
-import ui.components.WindowContent
-import ui.components.WindowHeader
+import ui.parts.WindowContent
+import ui.parts.WindowHeader
 import ui.mvp.BaseMvpWindow
 
 class SynchronizedWindow : BaseMvpWindow<SynchronizedPresenter, SynchronizedState>() {

@@ -1,4 +1,4 @@
-package ui.components
+package ui.parts
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import ui.components.ScrollBar
 
 @Composable
 fun WindowContent(content: @Composable () -> Unit) = ScrollBar(
