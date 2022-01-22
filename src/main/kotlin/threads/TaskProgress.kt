@@ -3,8 +3,8 @@ package threads
 open class TaskProgress(
     val taskNumber: Int,
     val max: Int,
-    val progress: Int
-) : Thread() {
+    val progress: Int = INITIAL_PROGRESS
+) {
 
     val status: TaskStatus
         get() = when {

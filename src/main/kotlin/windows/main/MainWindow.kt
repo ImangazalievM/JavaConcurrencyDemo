@@ -12,6 +12,7 @@ import ui.navigation.Route
 import ui.navigation.Routes
 import ui.navigation.router.BaseWindow
 import windows.synchronizers.countdown.CountDownWindow
+import windows.synchronizers.phaser.PhaserWindow
 import windows.synchronizers.synchronized.SynchronizedWindow
 
 class MainWindow : BaseWindow() {
@@ -36,6 +37,7 @@ class MainWindow : BaseWindow() {
             is Routes.ThreadPoolExecutor -> ThreadPoolExecutorWindow()
             is Routes.Synchronized -> SynchronizedWindow()
             is Routes.CountDownLatch -> CountDownWindow()
+            is Routes.Phaser -> PhaserWindow()
             else -> super.getRouteWindow(route)
         }
     }
@@ -113,7 +115,9 @@ class MainWindow : BaseWindow() {
             }) {
                 Text("Synchronized")
             }
-            Button(onClick = {}) {
+            Button(onClick = {
+                router.push(Routes.Phaser)
+            }) {
                 Text("Phaser")
             }
             Button(onClick = {
