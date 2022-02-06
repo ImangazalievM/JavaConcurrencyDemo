@@ -7,7 +7,7 @@ class CountDownTask(
     private val countDownLatch: CountDownLatch,
     private val taskNumber: Int,
     private val max: Int,
-    private val increment: (TaskProgress) -> Unit
+    private val onProgress: (TaskProgress) -> Unit
 ) : Thread() {
 
     private var progressNumber: Int = TaskProgress.INITIAL_PROGRESS
@@ -19,7 +19,7 @@ class CountDownTask(
             try {
                 sleep(500)
                 progressNumber = it + 1
-                increment(progress)
+                onProgress(progress)
             } catch (e: InterruptedException) {
                 return
             }

@@ -11,6 +11,7 @@ import ui.components.FlowRow
 import ui.navigation.Route
 import ui.navigation.Routes
 import ui.navigation.router.BaseWindow
+import windows.other.threadlocal.ThreadLocalWindow
 import windows.synchronizers.countdown.CountDownWindow
 import windows.synchronizers.phaser.PhaserWindow
 import windows.synchronizers.synchronized.SynchronizedWindow
@@ -38,6 +39,7 @@ class MainWindow : BaseWindow() {
             is Routes.Synchronized -> SynchronizedWindow()
             is Routes.CountDownLatch -> CountDownWindow()
             is Routes.Phaser -> PhaserWindow()
+            is Routes.ThreadLocal -> ThreadLocalWindow()
             else -> super.getRouteWindow(route)
         }
     }
@@ -154,7 +156,9 @@ class MainWindow : BaseWindow() {
             Button(onClick = {}) {
                 Text("Lock")
             }
-            Button(onClick = {}) {
+            Button(onClick = {
+                router.push(Routes.ThreadLocal)
+            }) {
                 Text("ThreadLocal")
             }
             Button(onClick = {}) {
