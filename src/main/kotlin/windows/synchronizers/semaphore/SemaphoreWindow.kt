@@ -17,13 +17,13 @@ import ui.parts.task.Task
 import ui.parts.task.TaskStyle
 import ui.parts.task.TasksLine
 import ui.parts.task.style
-import windows.synchronizers.reentrantlock.ReentrantLockPresenter
-import windows.synchronizers.reentrantlock.ReentrantLockState
+import windows.synchronizers.semaphore.SemaphorePresenter
+import windows.synchronizers.semaphore.SemaphoreState
 
-class ReentrantLockWindow : BaseMvpWindow<ReentrantLockPresenter, ReentrantLockState>() {
+class SemaphoreWindow : BaseMvpWindow<SemaphorePresenter, SemaphoreState>() {
 
-    override fun createPresenter(): ReentrantLockPresenter {
-        return ReentrantLockPresenter()
+    override fun createPresenter(): SemaphorePresenter {
+        return SemaphorePresenter()
     }
 
     @Composable
@@ -34,7 +34,7 @@ class ReentrantLockWindow : BaseMvpWindow<ReentrantLockPresenter, ReentrantLockS
                 .fillMaxSize()
                 .padding(start = 20.dp, end = 20.dp, bottom = 20.dp)
         ) {
-            WindowHeader(title = "ThreadPoolExecutor") {
+            WindowHeader(title = "Semaphore") {
                 router.pop()
             }
             Spacer(modifier = Modifier.height(5.dp))
@@ -62,17 +62,31 @@ class ReentrantLockWindow : BaseMvpWindow<ReentrantLockPresenter, ReentrantLockS
 
     @Composable
     private fun Config(threadValues: List<Int>) {
-        SimpleOutlinedExposedDropDownMenu(
-            values = threadValues.asStrings(),
-            selectedIndex = threadValues.indexOf(state.threadCount),
-            label = {
-                Text("Threads")
-            },
-            modifier = Modifier.requiredWidth(150.dp),
-            onChange = { presenter.onThreadCountChanged(threadValues[it]) },
-            backgroundColor = Color.White,
-            enabled = !state.isRunning
-        )
+        Row {
+            SimpleOutlinedExposedDropDownMenu(
+                values = threadValues.asStrings(),
+                selectedIndex = threadValues.indexOf(state.threadCount),
+                label = {
+                    Text("Threads")
+                },
+                modifier = Modifier.requiredWidth(150.dp),
+                onChange = { presenter.onThreadCountChanged(threadValues[it]) },
+                backgroundColor = Color.White,
+                enabled = !state.isRunning
+            )
+            Spacer(modifier = Modifier.width(20.dp))
+            SimpleOutlinedExposedDropDownMenu(
+                values = threadValues.asStrings(),
+                selectedIndex = threadValues.indexOf(state.totalPermits),
+                label = {
+                    Text("Permits")
+                },
+                modifier = Modifier.requiredWidth(150.dp),
+                onChange = { presenter.onPermitCountChanged(threadValues[it]) },
+                backgroundColor = Color.White,
+                enabled = !state.isRunning
+            )
+        }
     }
 
     @Composable
@@ -114,11 +128,12 @@ class ReentrantLockWindow : BaseMvpWindow<ReentrantLockPresenter, ReentrantLockS
 
     @Composable
     private fun RentrantLockStatus() = Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("Lock Status:")
+        Text("Semaphore:")
         Spacer(modifier = Modifier.height(5.dp))
-        val lockStyle = if (state.isLocked) TaskStyle.BLUE else TaskStyle.GRAY
+        val isFree = state.availablePermits == state.totalPermits
+        val lockStyle = if (isFree) TaskStyle.GRAY else TaskStyle.BLUE
         Text(
-            if (state.isLocked) "Locked" else "Free",
+            "Permits: ${state.availablePermits}/${state.totalPermits}",
             modifier = Modifier
                 .then(lockStyle)
                 .padding(10.dp)

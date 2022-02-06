@@ -41,6 +41,7 @@ class MainWindow : BaseWindow() {
             is Routes.Phaser -> PhaserWindow()
             is Routes.ThreadLocal -> ThreadLocalWindow()
             is Routes.ReentrantLock -> ReentrantLockWindow()
+            is Routes.Semaphore -> SemaphoreWindow()
             else -> super.getRouteWindow(route)
         }
     }
@@ -136,7 +137,9 @@ class MainWindow : BaseWindow() {
             }) {
                 Text("ReentrantLock")
             }
-            Button(enabled = false, onClick = {}) {
+            Button(onClick = {
+                router.push(Routes.Semaphore)
+            }) {
                 Text("Semaphore")
             }
             Button(enabled = false, onClick = {}) {

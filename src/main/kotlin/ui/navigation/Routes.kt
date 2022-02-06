@@ -6,5 +6,6 @@ sealed class Routes : Route() {
     object CountDownLatch : Routes()
     object Phaser : Routes()
     object ReentrantLock : Routes()
+    object Semaphore : Routes()
     object ThreadLocal : Routes()
 }
