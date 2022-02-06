@@ -5,5 +5,6 @@ sealed class Routes : Route() {
     object Synchronized : Routes()
     object CountDownLatch : Routes()
     object Phaser : Routes()
+    object ReentrantLock : Routes()
     object ThreadLocal : Routes()
 }

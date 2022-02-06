@@ -40,6 +40,7 @@ class MainWindow : BaseWindow() {
             is Routes.CountDownLatch -> CountDownWindow()
             is Routes.Phaser -> PhaserWindow()
             is Routes.ThreadLocal -> ThreadLocalWindow()
+            is Routes.ReentrantLock -> ReentrantLockWindow()
             else -> super.getRouteWindow(route)
         }
     }
@@ -63,10 +64,10 @@ class MainWindow : BaseWindow() {
             }) {
                 Text("Executors")
             }
-            Button(onClick = {}) {
+            Button(enabled = false, onClick = {}) {
                 Text("Fork/Join Pool")
             }
-            Button(onClick = {}) {
+            Button(enabled = false, onClick = {}) {
                 Text("Collections")
             }
         }
@@ -86,13 +87,13 @@ class MainWindow : BaseWindow() {
             mainAxisSpacing = 10.dp,
             maxLineChild = 3
         ) {
-            Button(onClick = {}) {
+            Button(enabled = false, onClick = {}) {
                 Text("Deadlock")
             }
-            Button(onClick = {}) {
+            Button(enabled = false, onClick = {}) {
                 Text("Livelock")
             }
-            Button(onClick = {}) {
+            Button(enabled = false, onClick = {}) {
                 Text("Starvation")
             }
         }
@@ -127,13 +128,18 @@ class MainWindow : BaseWindow() {
             }) {
                 Text("CountDownLatch")
             }
-            Button(onClick = {}) {
+            Button(enabled = false, onClick = {}) {
                 Text("CyclicBarrier")
             }
-            Button(onClick = {}) {
+            Button(onClick = {
+                router.push(Routes.ReentrantLock)
+            }) {
+                Text("ReentrantLock")
+            }
+            Button(enabled = false, onClick = {}) {
                 Text("Semaphore")
             }
-            Button(onClick = {}) {
+            Button(enabled = false, onClick = {}) {
                 Text("Exchanger<V>")
             }
         }
@@ -153,16 +159,13 @@ class MainWindow : BaseWindow() {
             mainAxisSpacing = 10.dp,
             maxLineChild = 3
         ) {
-            Button(onClick = {}) {
+            Button(enabled = false, onClick = {}) {
                 Text("Lock")
             }
             Button(onClick = {
                 router.push(Routes.ThreadLocal)
             }) {
                 Text("ThreadLocal")
-            }
-            Button(onClick = {}) {
-                Text("Mutex")
             }
         }
     }

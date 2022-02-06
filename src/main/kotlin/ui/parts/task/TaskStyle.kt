@@ -14,7 +14,7 @@ object TaskStyle {
     val RED = Modifier
         .background(Color(0xfff4cccc), shape)
         .border(2.dp, Color(0xff19456f), shape)
-    val BLUE =Modifier
+    val BLUE = Modifier
         .background(Color(0xffcfe2f3), shape)
         .border(2.dp, Color(0xff19456f), shape)
     val GREEN = Modifier

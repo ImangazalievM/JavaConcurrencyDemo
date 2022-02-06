@@ -1,8 +1,6 @@
 package windows.other.threadlocal
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,7 +12,6 @@ import androidx.compose.ui.unit.sp
 import extensions.asStrings
 import threads.TaskStatus
 import ui.components.SimpleOutlinedExposedDropDownMenu
-import ui.modifiers.dashedBorder
 import ui.mvp.BaseMvpWindow
 import ui.parts.WindowContent
 import ui.parts.WindowHeader
@@ -53,16 +50,14 @@ class ThreadLocalWindow : BaseMvpWindow<ThreadLocalPresenter, ThreadLocalState>(
             backgroundColor = Color.White,
             enabled = !state().isRunning
         )
-
         Spacer(modifier = Modifier.height(20.dp))
-
         TasksStatus()
         Spacer(modifier = Modifier.height(20.dp))
         ThreadsVisualization()
         Spacer(modifier = Modifier.height(20.dp))
         Button(
             enabled = !state().isRunning,
-            onClick = { presenter.startCalculation() }
+            onClick = { presenter.start() }
         ) {
             Text("Start")
         }

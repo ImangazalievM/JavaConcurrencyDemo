@@ -64,24 +64,24 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
         Row {
             SimpleOutlinedExposedDropDownMenu(
                 values = threadValues.asStrings(),
-                selectedIndex = threadValues.indexOf(state.taskCount),
+                selectedIndex = threadValues.indexOf(state.threadCount),
                 label = {
-                    Text("Tasks")
+                    Text("Threads")
                 },
                 modifier = Modifier.requiredWidth(150.dp),
-                onChange = { presenter.onTaskCountSelected(threadValues[it]) },
+                onChange = { presenter.onThreadCountSelected(threadValues[it]) },
                 backgroundColor = Color.White,
                 enabled = !state.areThreadsRunning
             )
             Spacer(modifier = Modifier.width(10.dp))
             SimpleOutlinedExposedDropDownMenu(
                 values = threadValues.asStrings(),
-                selectedIndex = threadValues.indexOf(state.threadCount),
+                selectedIndex = threadValues.indexOf(state.poolSize),
                 label = {
-                    Text("Threads")
+                    Text("Pool Size")
                 },
                 modifier = Modifier.requiredWidth(180.dp),
-                onChange = { presenter.onThreadCountSelected(threadValues[it]) },
+                onChange = { presenter.onPoolSizeSelected(threadValues[it]) },
                 backgroundColor = Color.White,
                 enabled = !state.areThreadsRunning
             )
@@ -124,7 +124,7 @@ class ThreadPoolExecutorWindow : BaseMvpWindow<ThreadPoolExecutorPresenter, Thre
         Text("In Progress", style = MaterialTheme.typography.h6)
         Spacer(modifier = Modifier.height(10.dp))
         TasksLine {
-            (1..state.threadCount).forEach { threadId ->
+            (1..state.poolSize).forEach { threadId ->
                 val shape = RoundedCornerShape(10.dp)
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text("Thread $threadId")

@@ -1,21 +1,23 @@
-package windows.other.threadlocal
+package windows.synchronizers.reentrantlock
 
 import threads.TaskProgress
 import threads.TaskStatus
 import ui.mvp.Presenter
+import java.util.concurrent.locks.ReentrantLock
 import kotlin.random.Random
 
-class ThreadLocalPresenter : Presenter<ThreadLocalState>() {
+class ReentrantLockPresenter : Presenter<ReentrantLockState>() {
 
-    private val threadLocal = ThreadLocal<Int>()
-    private lateinit var tasks: List<ThreadLocalTask>
+    private val reentrantLock = ReentrantLock()
+    private lateinit var tasks: List<ReentrantLockTask>
 
-    override fun getInitialState(): ThreadLocalState {
+    override fun getInitialState(): ReentrantLockState {
         tasks = generateTasks(THREAD_COUNT_DEFAULT)
-        return ThreadLocalState(
-            status = TaskStatus.PENDING,
+        return ReentrantLockState(
             threadCount = THREAD_COUNT_DEFAULT,
-            progress = generateEmptyProgress()
+            progress = tasks.map { it.progress },
+            status = TaskStatus.PENDING,
+            isLocked = false
         )
     }
 
@@ -24,40 +26,29 @@ class ThreadLocalPresenter : Presenter<ThreadLocalState>() {
         updateState(
             state.copy(
                 threadCount = count,
-                progress = generateEmptyProgress()
+                progress = tasks.map { it.progress }
             )
         )
     }
 
     fun start() {
-        updateState(
-            state.copy(status = TaskStatus.RUNNING)
-        )
+        updateState(state.copy(
+            status = TaskStatus.RUNNING,
+            progress = tasks.map { it.progress }
+        ))
 
         tasks.forEach {
             it.start()
         }
     }
 
-    private fun generateTasks(size: Int): MutableList<ThreadLocalTask> {
+    private fun generateTasks(size: Int): MutableList<ReentrantLockTask> {
         return (1..size).map { taskNumber ->
             val duration = Random.nextInt(5, 15)
-            ThreadLocalTask(threadLocal, taskNumber, duration) {
-                updateProgress(taskNumber, TaskProgress(
-                    taskNumber = taskNumber,
-                    max = duration,
-                    progress = threadLocal.get()
-                ))
+            ReentrantLockTask(reentrantLock, taskNumber, duration) {
+                updateProgress(taskNumber, it)
             }
         }.toMutableList()
-    }
-
-    private fun generateEmptyProgress() : List<TaskProgress> = tasks.map {
-        TaskProgress(
-            taskNumber = it.taskNumber,
-            max = it.max,
-            progress = TaskProgress.INITIAL_PROGRESS
-        )
     }
 
     @Synchronized
@@ -73,10 +64,16 @@ class ThreadLocalPresenter : Presenter<ThreadLocalState>() {
             !isAnyStarted -> TaskStatus.PENDING
             else -> TaskStatus.RUNNING
         }
+
+        if (status == TaskStatus.FINISHED) {
+            tasks = generateTasks(state.threadCount)
+        }
+
         updateState(
             state.copy(
                 progress = newProgressList,
-                status = status
+                status = status,
+                isLocked = reentrantLock.isLocked
             )
         )
     }
