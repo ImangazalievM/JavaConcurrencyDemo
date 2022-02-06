@@ -2,8 +2,6 @@
 
 Java concurrency/multithreading visualizations implemented using Compose Desktop.
 
-
-
 - Executors
 - Synchronization:
   - Synchronized
@@ -30,3 +28,7 @@ Java concurrency/multithreading visualizations implemented using Compose Desktop
 
 ### Recommended books
 - **Java Concurrency in Practice** by Brian Goetz, Tim Peierls, etc.
+
+### Articles
+
+- [Guide to java.util.concurrent.Locks])(https://www.baeldung.com/java-concurrent-locks)
