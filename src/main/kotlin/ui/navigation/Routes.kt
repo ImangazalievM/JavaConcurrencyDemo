@@ -7,5 +7,6 @@ sealed class Routes : Route() {
     object Phaser : Routes()
     object ReentrantLock : Routes()
     object Semaphore : Routes()
+    object Exchanger : Routes()
     object ThreadLocal : Routes()
 }

@@ -42,6 +42,7 @@ class MainWindow : BaseWindow() {
             is Routes.ThreadLocal -> ThreadLocalWindow()
             is Routes.ReentrantLock -> ReentrantLockWindow()
             is Routes.Semaphore -> SemaphoreWindow()
+            is Routes.Exchanger -> SemaphoreWindow()
             else -> super.getRouteWindow(route)
         }
     }
@@ -162,9 +163,6 @@ class MainWindow : BaseWindow() {
             mainAxisSpacing = 10.dp,
             maxLineChild = 3
         ) {
-            Button(enabled = false, onClick = {}) {
-                Text("Lock")
-            }
             Button(onClick = {
                 router.push(Routes.ThreadLocal)
             }) {
