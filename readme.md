@@ -5,16 +5,15 @@
 Java concurrency/multithreading visualizations implemented using Compose Desktop.
 
 - Executors
+- Fork/Join Pool
 - Synchronization:
   - Synchronized
   - CountDownLatch
   - Semaphore
   - Exchanger<T>
   - CyclicBarrier
+  - ReentrantLock
   - Phaser
-- Fork/Join Pool
-- Lock
-- Mutex
 - ThreadLocal
 - Synchronized Collections
 
@@ -34,4 +33,5 @@ Java concurrency/multithreading visualizations implemented using Compose Desktop
 ### Articles
 
 - [Introduction to Exchanger in Java](https://www.baeldung.com/java-exchanger)
+- [Using a Mutex Object in Java](https://www.baeldung.com/java-mutex)
 - [Guide to java.util.concurrent.Locks](https://www.baeldung.com/java-concurrent-locks)
