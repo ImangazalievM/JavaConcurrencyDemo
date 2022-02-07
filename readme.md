@@ -1,6 +1,6 @@
-# Java Concurrency Demo
-
-![This is an image](docs/logo.png)
+<p align="center">
+    <img src="docs/logo.png" alt="logo">
+</p>
 
 Java concurrency/multithreading visualizations implemented using Compose Desktop.
 
@@ -34,4 +34,4 @@ Java concurrency/multithreading visualizations implemented using Compose Desktop
 ### Articles
 
 - [Introduction to Exchanger in Java](https://www.baeldung.com/java-exchanger)
-- [Guide to java.util.concurrent.Locks])(https://www.baeldung.com/java-concurrent-locks)
+- [Guide to java.util.concurrent.Locks](https://www.baeldung.com/java-concurrent-locks)
