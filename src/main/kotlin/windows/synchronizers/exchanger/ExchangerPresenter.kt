@@ -7,34 +7,41 @@ import java.util.concurrent.Exchanger
 class ExchangerPresenter : Presenter<ExchangerState>() {
 
     private var semaphore = Exchanger<String?>()
-    private var task1 = ExchangerTask(semaphore) {
-
-    }
-    private var task2 = ExchangerTask(semaphore) {
-
-    }
+    private lateinit var task1: ExchangerTask
+    private lateinit var task2: ExchangerTask
 
     override fun getInitialState(): ExchangerState {
         return ExchangerState(
-            message1 = null,
-            message2 = null,
+            message1 = "",
+            message2 = "",
             status = TaskStatus.PENDING
         )
     }
 
-    fun sendMessageTo1(count: Int) {
-
+    fun sendMessageTo1(message: String) {
+        task1.sendMessage(message)
     }
 
-    fun sendMessageTo2(count: Int) {
-
+    fun sendMessageTo2(message: String) {
+        task2.sendMessage(message)
     }
 
     fun start() {
-        updateState(state.copy(
-            status = TaskStatus.RUNNING
-        ))
+        task1 = ExchangerTask("Task 1", semaphore) {
+            updateState(state.copy(message2 = it))
+        }
+        task2 = ExchangerTask("Task 2", semaphore) {
+            updateState(state.copy(message1 = it))
+        }
         task1.start()
         task2.start()
+        updateState(state.copy(status = TaskStatus.RUNNING))
+    }
+
+
+    fun stop() {
+        task1.stopListening()
+        task2.stopListening()
+        updateState(state.copy(status = TaskStatus.FINISHED))
     }
 }

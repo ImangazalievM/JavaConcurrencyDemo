@@ -4,8 +4,8 @@ import threads.TaskStatus
 import ui.mvp.State
 
 data class ExchangerState(
-    val message1: String?,
-    val message2: String?,
+    val message1: String,
+    val message2: String,
     val status: TaskStatus
 ): State {
 

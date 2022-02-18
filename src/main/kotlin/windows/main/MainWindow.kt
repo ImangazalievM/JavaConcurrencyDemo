@@ -13,6 +13,7 @@ import ui.navigation.Routes
 import ui.navigation.router.BaseWindow
 import windows.other.threadlocal.ThreadLocalWindow
 import windows.synchronizers.countdown.CountDownWindow
+import windows.synchronizers.exchanger.ExchangerWindow
 import windows.synchronizers.phaser.PhaserWindow
 import windows.synchronizers.synchronized.SynchronizedWindow
 
@@ -42,7 +43,7 @@ class MainWindow : BaseWindow() {
             is Routes.ThreadLocal -> ThreadLocalWindow()
             is Routes.ReentrantLock -> ReentrantLockWindow()
             is Routes.Semaphore -> SemaphoreWindow()
-            is Routes.Exchanger -> SemaphoreWindow()
+            is Routes.Exchanger -> ExchangerWindow()
             else -> super.getRouteWindow(route)
         }
     }
@@ -143,7 +144,9 @@ class MainWindow : BaseWindow() {
             }) {
                 Text("Semaphore")
             }
-            Button(enabled = false, onClick = {}) {
+            Button(onClick = {
+                router.push(Routes.Exchanger)
+            }) {
                 Text("Exchanger<V>")
             }
         }
